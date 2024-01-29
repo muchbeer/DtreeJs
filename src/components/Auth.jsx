@@ -1,14 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import axios from 'axios';
 import { Box, Button, TextField, Typography, CircularProgress } from "@mui/material";
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
-import { useNavigate } from 'react-router-dom';
 import "./auth.css";
 import { AuthContext } from '../context/authcontext/AuthContext';
 import { loginCall } from '../apiCalls';
 
 const Auth = () => {
-    const navigate = useNavigate();
+
     const [isSignup, setIsSignUp] = useState(false);
 
     const [inputs, setInput] = useState({
@@ -16,65 +14,9 @@ const Auth = () => {
         email : "",
         password: ""
     });
-
-    const [error, setError] = useState(null);
   
     const {user, isFetching, dispatch } = useContext(AuthContext);
 
-    const authenticateBool = () => {
-        const {name, email, password} = inputs;
-        const data = { email, password };
-
-
-        loginCall(
-            data, dispatch
-        )
-
-        /* 
-        
-  try {
-            const response = await axios.post("api/auth/login", data);
-       
-            if (response.data  && Object.keys(response.data).length) {
-                console.log("Successful signed");
-                const expirationTime = new Date(new Date().getTime() + 60000);
-                Cookies.set('auth', JSON.stringify(data), { expires: expirationTime });
-                return true;
-            }  else {
-                console.log("No username found")
-                alert("No username found please try again");
-                return false; 
-            }
-            
-        } catch (error) {
-            setError(error);
-            return false;
-           
-        }  
-        
-        */
-    
-      
-    }
-
-
-    axios.defaults.withCredentials = true;
-
-    useEffect( () => {
-
-        axios.get('api/auth/protected').then(users => {
-
-        if(users.data.user) {
-          navigate('/protected');
-        } else {
-          navigate('/login');
-        }
-        
-        }).catch( error => {
-          console.log(`Session error is : ${error}`);
-        })
-    
-      }, [])
 
     const handleInputChange = (event) => {
         
@@ -88,34 +30,20 @@ const Auth = () => {
       const handleSubmit = async (event) => {
         event.preventDefault();
 
+        const {name, email, password} = inputs;
+        const data = { email, password };
 
-        /*
-            const authBool = await authenticateBool();
 
-            if(authBool) {
-                console.log("Login successful status 200");
-                navigate('/protected');
-                window.location.reload(false);
-            } else {
-                console.log("Login failed");
-                navigate('/login');
-                setInput({email: "", password: ""});
-            }
-        */
-         authenticateBool();
-
-            
+        loginCall( data, dispatch )
+          
         } 
                
     
-
     const resetState = () => {
         setIsSignUp(!isSignup);
         setInput({name: "", email: "", password: ""});
     }
 
-
-    console.log(`The username is now : ${user}`);
   return (
     <div className='login'>
         <form onSubmit={handleSubmit}>
