@@ -13,13 +13,10 @@ import {
 } from "react-router-dom";
 import ViewAirtime from './airtime/ViewAirtime';
 import SendAirtime from './sendairtime/SendAirtime';
-import { AuthContext } from '../context/authcontext/AuthContext';
-
 
 
 function Home() {
 
-  const { user } = useContext(AuthContext);
   const [firstname , setFirstname ] = useState('');
   const [isAuth, setIsAuth] = useState(false);
 
@@ -77,15 +74,15 @@ function Home() {
           <Sidebar />
           
           <Routes>
-          <Route path="/protected/*" element={ user ? <Dashboard /> : <Auth /> } />
+          <Route path="/protected/*" element={ isAuth ? <Dashboard /> : <Auth /> } />
   
           <Route path="/login" element= {  <Auth /> }  />
 
-          <Route path="/airtime"  element= { user ? <Airtime /> :  <Auth /> } />
+          <Route path="/airtime"  element= { isAuth ? <Airtime /> :  <Auth /> } />
 
-          <Route path= "viewairtime/:airtimeID" element = { user ? <ViewAirtime/> : <Auth /> } />
+          <Route path= "viewairtime/:airtimeID" element = { isAuth ? <ViewAirtime/> : <Auth /> } />
 
-          <Route path = "/sendairtime" element = { user ? <SendAirtime /> : <Auth /> }  />
+          <Route path = "/sendairtime" element = { isAuth ? <SendAirtime /> : <Auth /> }  />
           </Routes>
         </div>
            

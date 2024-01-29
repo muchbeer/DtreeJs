@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { Box, Button, TextField, Typography, CircularProgress } from "@mui/material";
 import LoginOutlinedIcon from '@mui/icons-material/LoginOutlined';
 import { useNavigate } from 'react-router-dom';
 import "./auth.css";
-import { AuthContext } from '../context/authcontext/AuthContext';
-import { loginCall } from '../apiCalls';
+import Cookies from 'js-cookie';
+
 
 const Auth = () => {
     const navigate = useNavigate();
@@ -18,19 +18,11 @@ const Auth = () => {
     });
 
     const [error, setError] = useState(null);
-  
-    const {user, isFetching, dispatch } = useContext(AuthContext);
 
-    const authenticateBool = () => {
+    const authenticateBool = async() => {
         const {name, email, password} = inputs;
         const data = { email, password };
-
-
-        loginCall(
-            data, dispatch
-        )
-
-        /* 
+ 
         
   try {
             const response = await axios.post("api/auth/login", data);
@@ -38,7 +30,9 @@ const Auth = () => {
             if (response.data  && Object.keys(response.data).length) {
                 console.log("Successful signed");
                 const expirationTime = new Date(new Date().getTime() + 60000);
+                
                 Cookies.set('auth', JSON.stringify(data), { expires: expirationTime });
+                
                 return true;
             }  else {
                 console.log("No username found")
@@ -52,7 +46,7 @@ const Auth = () => {
            
         }  
         
-        */
+        
     
       
     }
@@ -89,7 +83,6 @@ const Auth = () => {
         event.preventDefault();
 
 
-        /*
             const authBool = await authenticateBool();
 
             if(authBool) {
@@ -101,8 +94,6 @@ const Auth = () => {
                 navigate('/login');
                 setInput({email: "", password: ""});
             }
-        */
-         authenticateBool();
 
             
         } 
@@ -114,8 +105,6 @@ const Auth = () => {
         setInput({name: "", email: "", password: ""});
     }
 
-
-    console.log(`The username is now : ${user}`);
   return (
     <div className='login'>
         <form onSubmit={handleSubmit}>
