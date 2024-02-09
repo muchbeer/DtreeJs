@@ -4,6 +4,7 @@ import "./upload.css"
 import * as Excel from 'xlsx';
 import { Button, Typography, Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
+import axios from "axios";
 
 
 function UploadAirtime() {
@@ -11,17 +12,23 @@ function UploadAirtime() {
   const [excelFile, setExcelFile] = useState(null);
   const [typeError, setTypeError] = useState(null);
   const [fileName, setFileName] =useState(null);
-  const rows = []
-
+  // const {user, isFetching, dispatch } = useContext(AuthContext);
 
   const columns = [
-    { field: "target", headerName: "Target", width: 120 },
-    { field: "messageId", headerName: "MessageId", width: 120 },
-    { field: "createTime", headerName: "CreateTime", width: 120}
+    { field: "id", headerName: "ID", width: 20, flex: 1 },
+    { field: "number", headerName: "PhoneNumber", width: 120, flex: 1 },
+    { field: "amount", headerName: "Amount", width: 120 , flex : 1 },
   ]
 
-  // submit state
-  const [excelData, setExcelData] = useState(null);
+   const [excelDisplay, setExcelDisplay] = useState([]);
+
+   
+
+  function addExcelItems(inputItem) {
+    setExcelDisplay(prevItems => {
+      return [...prevItems, inputItem];
+    });
+  }
 
     // onchange event
     const handleFile=(e)=>{
@@ -36,6 +43,9 @@ function UploadAirtime() {
           reader.onload=(e)=>{
             setExcelFile(e.target.result);
           }
+
+
+          
         }
         else{
           setTypeError('Please select only excel file types');
@@ -47,20 +57,65 @@ function UploadAirtime() {
       }
     }
 
+      //call the api now 
+    const sendAirtime = async (e) => {
+      e.preventDefault();
+      
+      try {
+        const airtime =  excelDisplay.map((value) =>  {
+          const phoneNum = value.number
+          const amount = 'TZS ' + value.amount.toString();
+          const airtime_object = {phoneNumber: phoneNum.toString(), amount: amount}
+          return airtime_object
+       })
+      
+       const res = await axios.post('api/auth/sendairtime', airtime);
+
+      if (res.data == null) {
+        console.log("No airtime sent")
+        alert("No airtime sent please try again");
+        
+          }  else {
+              console.log(`The data captured is : ${res.data}`);
+
+              const airtimeJson = JSON.stringify(res.data);
+              console.log('Data send already and return function is : ' + airtimeJson);
+          }
+          
+      } catch (error) {
+        console.log('the error is now : ' + error);
+      }
+      
+       
+    }
       // submit event
   const handleFileSubmit=(e)=>{
-    e.preventDefault();
+  
+    
     if(excelFile!==null){
+      
       const workbook = Excel.read(excelFile,{type: 'buffer'});
       const worksheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[worksheetName];
       const data = Excel.utils.sheet_to_json(worksheet);
-      const dataAirtime = data.slice(0,10);
-      setExcelData(dataAirtime);
 
+      data.forEach((value, keyin) => {
+    
+        const entryz = Object.entries(value)
+        const id = keyin+1;
+        console.log('The number entries is now : ' + entryz[0][1]);
+
+        addExcelItems({id: id, number: entryz[0][1], amount: entryz[1][1]})
+
+      })
 
     }
-  
+
+    if(excelDisplay.length > 0 ) {
+      const excejson = JSON.stringify(excelDisplay);
+      console.log("Now I can view the data" +  excejson);
+    }
+    
   }
 
   
@@ -70,7 +125,7 @@ function UploadAirtime() {
         <div className="userTitleContainer">
         <h2 className="userTitle">Upload and View Excel Sheets</h2>
         <Link to="/uploadairtime">
-          <button className="userAddButton">Send Airtime</button>
+          <button className="userAddButton" onClick={ sendAirtime }>Send Airtime</button>
         </Link>
       </div>
 
@@ -112,40 +167,25 @@ function UploadAirtime() {
                
             </Box>
 
-            <div>
-              { excelData ? 
-                  (<div> 
-                    <DataGrid
-                      rows={  excelData.map((value) => {
-                        let rowData = {}
-
-                        Object.keys(value).map((inKey)=> {
-            const inObjects = value[inKey];
-           
-              rowData[inKey] = inObjects
-            console.log(`Inside object key is : ${inKey}`)
-            console.log(`Inside object is now : ${inObjects}`)
-        })
-
-        rows.push(rowData);
-        console.log("now I made it happen");
-        console.log(rows);
-        
-        return rows;
-                            })  }
-                          disableSelectionOnClick
-                          columns={ columns }
-                          getRowId={ (row) =>  row.ID }
-                          initialState={{
+            <div className='uploadExcel'>
+             
+                  {
+                    excelDisplay.length > 0 && (
+                      <DataGrid
+                        rows={ excelDisplay }
+                        disableSelectionOnClick
+                        columns={columns}
+                        initialState={{
                           pagination: {
                           paginationModel: { page: 0, pageSize: 10 },
-                                      },
-                                  }}
-                          pageSizeOptions={[10, 20]}
-                          checkboxSelection />
-                  </div>) :
-                  ( <div> No File is uploaded yet! </div> ) }
-            </div>
+                        },
+                        }}
+                        pageSizeOptions={[10, 20]}
+                        checkboxSelection />
+                      
+                      )
+                  }
+                </div>
 
             </div>
             
