@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { Link } from 'react-router-dom';
 import "./upload.css"
 import * as Excel from 'xlsx';
 import { Button, Typography, Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
-import axios from "axios";
+import { AirtimeContext } from '../../context/airtimecontext/AirtimeContext';
+import { sendAirtimeApi } from '../../context/airtimecontext/airtimeCalls';
 
 
 function UploadAirtime() {
@@ -12,7 +13,7 @@ function UploadAirtime() {
   const [excelFile, setExcelFile] = useState(null);
   const [typeError, setTypeError] = useState(null);
   const [fileName, setFileName] =useState(null);
-  // const {user, isFetching, dispatch } = useContext(AuthContext);
+  const {airtime, isFetching, dispatch } = useContext(AirtimeContext);
 
   const columns = [
     { field: "id", headerName: "ID", width: 20, flex: 1 },
@@ -61,32 +62,17 @@ function UploadAirtime() {
     const sendAirtime = async (e) => {
       e.preventDefault();
       
-      try {
-        const airtime =  excelDisplay.map((value) =>  {
-          const phoneNum = value.number
-          const amount = 'TZS ' + value.amount.toString();
-          const airtime_object = {phoneNumber: phoneNum.toString(), amount: amount}
-          return airtime_object
-       })
+      const airtime_excel =  excelDisplay.map((value) =>  {
+        const phoneNum = value.number
+        const amount = 'TZS ' + value.amount.toString();
+        const airtime_object = {phoneNumber: phoneNum.toString(), amount: amount}
+        return airtime_object
+     })
       
-       const res = await axios.post('api/auth/sendairtime', airtime);
-
-      if (res.data == null) {
-        console.log("No airtime sent")
-        alert("No airtime sent please try again");
-        
-          }  else {
-              console.log(`The data captured is : ${res.data}`);
-
-              const airtimeJson = JSON.stringify(res.data);
-              console.log('Data send already and return function is : ' + airtimeJson);
-          }
-          
-      } catch (error) {
-        console.log('the error is now : ' + error);
-      }
-      
-       
+   
+     sendAirtimeApi(airtime_excel, dispatch);
+     const retrieveJSON = JSON.stringify(airtime);
+     console.log(retrieveJSON);
     }
       // submit event
   const handleFileSubmit=(e)=>{
@@ -117,8 +103,6 @@ function UploadAirtime() {
     }
     
   }
-
-  
 
   return (
     <div className='uploadAirtime'>

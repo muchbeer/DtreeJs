@@ -20,22 +20,3 @@ export const loginCall = async (userCredential, dispatch) => {
     }
   };
 
-  //sending airtime
-  export const sendAirtimeApi = async(airtime, dispatch) => {
-    dispatch({ type: "LOGIN_START" });
-   
-    try {
-      const res = await axios.post('api/auth/sendairtime', airtime);
-
-      if (res.data == null) {
-        console.log("No airtime sent")
-        alert("No airtime sent please try again");
-        
-          } 
-          console.log(`The data captured is : ${res.data}`)
-  
-      dispatch({ type: "LOGIN_SUCCESS", payload: res.data });
-    } catch (error) {
-      dispatch({ type: "LOGIN_FAILURE", payload: error });
-    }
-  }

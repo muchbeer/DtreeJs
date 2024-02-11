@@ -1,13 +1,13 @@
 export const AirtimeStart = (airtime) => ({
-    type: "AIRTIME_START",
+    type: "SEND_AIRTIME_START",
   });
   
   export const AirtimeSuccess = (airtime) => ({
-    type: "AIRTIME_SUCCESS",
+    type: "SEND_AIRTIME_SUCCESS",
     payload: airtime,
   });
   
   export const AirtimeFailure = (error) => ({
-    type: "AIRTIME_FAILURE",
+    type: "SEND_AIRTIME_FAILURE",
     payload:error
   });

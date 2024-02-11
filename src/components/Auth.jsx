@@ -41,7 +41,7 @@ const Auth = () => {
     
     const resetState = () => {
         setIsSignUp(!isSignup);
-        setInput({name: "", email: "", password: ""});
+        setInput({name: '', email: '', password: ''});
     }
 
   return (
