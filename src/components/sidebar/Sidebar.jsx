@@ -41,11 +41,12 @@ function Sidebar() {
                         
                         <span className='sideText'>Users</span>
                     </li>
+                    <Link to="/mainairtime" className='link'>
                     <li className='sidebarListItem'>
                         <TimelineIcon 
                          sx={{  color: '#747264' }}  />
-                        <span className='sideText'>Product</span>
-                    </li>
+                        <span className='sideText'>View airtime</span>
+                    </li> </Link>
                     <li className='sidebarListItem'>
                         <ListAltOutlinedIcon 
                              sx={{  color: '#747264' }} />

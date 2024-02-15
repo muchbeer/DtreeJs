@@ -8,6 +8,7 @@ import {
     BrowserRouter as Router,
     Routes
   } from "react-router-dom";
+import AirtimeMain from "./airtime/AirtimeMain";
 
 function App() {
     
@@ -23,6 +24,8 @@ function App() {
             <Route path="/airtime"  element= {  <Airtime /> } />
 
             <Route path="/post/:postId" element= { <Airtime /> } />
+
+            <Route path="/mainairtime" element= { < AirtimeMain /> }  />
 
             </Routes>
         </Router>

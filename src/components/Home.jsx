@@ -13,8 +13,11 @@ import {
 import ViewAirtime from './airtime/ViewAirtime';
 import SendAirtime from './sendairtime/SendAirtime';
 import UploadAirtime from './upload/UploadAirtime';
+import AirtimeMain from './airtime/AirtimeMain';
 import { AuthContext } from '../context/authcontext/AuthContext';
 import { Upload } from '@mui/icons-material';
+import AirtimeReceived from './airtime/AirtimeReceived';
+import Test from './airtime/Test';
 
 
 
@@ -45,6 +48,10 @@ function Home() {
           <Route path = "/sendairtime" element = { user ? <SendAirtime /> : <Auth /> }  />
 
           <Route path='/uploadairtime'  element = {  user ? <UploadAirtime /> : <Auth />  } />
+
+          <Route path="/mainairtime" element= { user ? < AirtimeMain /> : <Auth />}  />
+
+          <Route path='/viewairtimereceived' element = { user ? < AirtimeReceived /> : <Auth /> } />
           </Routes>
         </div>
            
