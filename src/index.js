@@ -5,6 +5,7 @@ import { AuthContextProvider } from './context/authcontext/AuthContext';
 import { AirtimeContextProvider } from './context/airtimecontext/AirtimeContext';
 import { ViewAirtimeContextProvider } from './context/viewairtimecontext/ViewAirtimeContext';
 import { ReceivedAirtimeContextProvider } from './context/receivedairtimecontext/ReceivedAirtimeContext';
+import { SingleAirtimeContextProvider } from './context/singleairtimecontext/SingleContext';
 
 
 
@@ -16,7 +17,9 @@ root.render(
       <AirtimeContextProvider>
         <ViewAirtimeContextProvider>
           <ReceivedAirtimeContextProvider>
+            <SingleAirtimeContextProvider>
             <Home />
+            </SingleAirtimeContextProvider>
           </ReceivedAirtimeContextProvider>
         </ViewAirtimeContextProvider>
       </AirtimeContextProvider>

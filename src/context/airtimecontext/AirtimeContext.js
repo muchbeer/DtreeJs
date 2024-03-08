@@ -1,8 +1,9 @@
 import { createContext, useEffect, useReducer } from "react";
 import AirtimeReducer from "./AirtimeReducer";
 
+//JSON.parse(localStorage.getItem("airtime")) ||
 const INITIAL_STATE = {
-    airtime: JSON.parse(localStorage.getItem("airtime")) || null,
+    airtime:   null,
     isFetching: false,
     error: false,
   };
@@ -13,10 +14,11 @@ const INITIAL_STATE = {
 
     const [state, dispatch] = useReducer(AirtimeReducer, INITIAL_STATE);
 
+    
     useEffect(()=>{
         localStorage.setItem("airtime", JSON.stringify(state.airtime))
       }, 
-      [state.airtime]);
+      [state.airtime]);   
 
       return (
         <AirtimeContext.Provider

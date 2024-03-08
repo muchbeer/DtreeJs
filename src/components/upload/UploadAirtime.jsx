@@ -21,7 +21,7 @@ function UploadAirtime() {
     { field: "amount", headerName: "Amount", width: 120 , flex : 1 },
   ]
 
-   const [excelDisplay, setExcelDisplay] = useState([]);
+  const [excelDisplay, setExcelDisplay] = useState([]);
 
    
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react'
+import React, {  useContext } from 'react'
 import Topbar from "./topbar/Topbar"
 import Sidebar from './sidebar/Sidebar';
 import Auth from './Auth';
@@ -15,11 +15,8 @@ import SendAirtime from './sendairtime/SendAirtime';
 import UploadAirtime from './upload/UploadAirtime';
 import AirtimeMain from './airtime/AirtimeMain';
 import { AuthContext } from '../context/authcontext/AuthContext';
-import { Upload } from '@mui/icons-material';
 import AirtimeReceived from './airtime/AirtimeReceived';
-import Test from './airtime/Test';
-
-
+import OneAirtime from './airtime/OneAirtime';
 
 function Home() {
 
@@ -52,6 +49,8 @@ function Home() {
           <Route path="/mainairtime" element= { user ? < AirtimeMain /> : <Auth />}  />
 
           <Route path='/viewairtimereceived' element = { user ? < AirtimeReceived /> : <Auth /> } />
+
+          <Route path='/onairtime' element = { user ? < OneAirtime /> : <Auth /> } />
           </Routes>
         </div>
            

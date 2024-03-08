@@ -1,7 +1,9 @@
 import axios from "axios";
+import { AirtimeStart, AirtimeSuccess, AirtimeFailure } from "./AirtimeActions";
+
   //sending airtime
   export const sendAirtimeApi = async(airtime, dispatch) => {
-    dispatch({ type: "SEND_AIRTIME_START" });
+    dispatch(AirtimeStart());
    
     try {
         
@@ -14,9 +16,10 @@ import axios from "axios";
           } 
 
   
-      dispatch({ type: "SEND_AIRTIME_SUCCESS", payload: res.data });
+      dispatch(AirtimeSuccess(res.data));
     } catch (error) {
-      dispatch({ type: "SEND_AIRTIME_FAILURE", payload: error });
+      dispatch(AirtimeFailure(error));
     }
   }
+
 

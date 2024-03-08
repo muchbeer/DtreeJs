@@ -1,19 +1,33 @@
 import React from 'react'
 import "./sendairtime.css"
+import axios from 'axios'
 
 export default function SendAirtime() {
+
+
+  const handleCallback = async () => {
+
+    try {
+      const reqCallback = await axios.post('api/auth/airtimecallback');
+      const reqJSON = JSON.stringify(reqCallback);
+      console.log('The callback retrieved is : ' + reqJSON);
+    } catch (error) {
+      console.log('The error is callback is : ' +  error)
+    }
+  }
+  handleCallback(); 
 
 
   return (
     <div className='sendairtime'>
          <h1 className="newUserTitle">Send Airtime</h1>
-      <form className="newUserForm">
+      <form className="newUserForm" >
         <div className="newUserItem">
-          <label>Username</label>
+          <label>Phone Number</label>
           <input type="text" placeholder="john" />
         </div>
         <div className="newUserItem">
-          <label>Full Name</label>
+          <label>Amount</label>
           <input type="text" placeholder="John Smith" />
         </div>
         <div className="newUserItem">
@@ -50,7 +64,7 @@ export default function SendAirtime() {
             <option value="no">No</option>
           </select>
         </div>
-        <button className="newUserButton">Send</button>
+        <button className="newUserButton" >Send</button>
       </form>
     </div>
   )

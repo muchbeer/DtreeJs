@@ -1,4 +1,4 @@
-export const AirtimeStart = (airtime) => ({
+export const AirtimeStart = () => ({
     type: "SEND_AIRTIME_START",
   });
   

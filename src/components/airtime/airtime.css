@@ -30,3 +30,17 @@
       color: red;
       cursor: pointer;
   }
+
+  .oneairtime {
+    
+    display: flex;
+    margin-left: 50px;
+    margin-top: 20px;
+    align-items: center;
+   
+  }
+
+  .oneButton {
+    margin-top: 20px;
+    margin-left: 15px;
+  }

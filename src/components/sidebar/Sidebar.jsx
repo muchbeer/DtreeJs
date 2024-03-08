@@ -47,11 +47,12 @@ function Sidebar() {
                          sx={{  color: '#747264' }}  />
                         <span className='sideText'>View airtime</span>
                     </li> </Link>
+                    <Link to="/onairtime" className='link'>
                     <li className='sidebarListItem'>
                         <ListAltOutlinedIcon 
                              sx={{  color: '#747264' }} />
-                        <span className='sideText'>Report</span>
-                    </li>
+                        <span className='sideText'>Send Airtime</span>
+                    </li></Link>
                 </ul>
             </div>
         </div>
