@@ -35,7 +35,10 @@ export default function OneAirtime() {
       }
     }
 
-    const handleClose = () => {
+    const handleClose = (event, reason) => {
+      if (reason === 'clickaway') {
+        return;
+      }
       setOpenStatus(false);
       console.log('Closing the bar')
     }
@@ -63,7 +66,7 @@ export default function OneAirtime() {
                     open={ error }
                     severity= 'warning'
                     title= 'Error'
-                    message= 'There is some issue please reflect and try again'
+                    message= 'There is some issue please refresh the page and try again'
                   />  }
 
     {   (handleStatus(singleairtime)  === 'success')  &&  <BasicSnackbar

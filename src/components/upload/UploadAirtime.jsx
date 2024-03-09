@@ -6,6 +6,7 @@ import { Button, Typography, Box } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { AirtimeContext } from '../../context/airtimecontext/AirtimeContext';
 import { sendAirtimeApi } from '../../context/airtimecontext/airtimeCalls';
+import BasicSnackbar from '../common/BasicSnackBar';
 
 
 function UploadAirtime() {
@@ -13,15 +14,38 @@ function UploadAirtime() {
   const [excelFile, setExcelFile] = useState(null);
   const [typeError, setTypeError] = useState(null);
   const [fileName, setFileName] =useState(null);
-  const {airtime, isFetching, dispatch } = useContext(AirtimeContext);
+  const {airtime, isFetching, error,  dispatch } = useContext(AirtimeContext);
+  const [excelDisplay, setExcelDisplay] = useState([]);
+  const [openStatus, setOpenStatus] = useState(false);
+  const [sendBtnStatus, setSendBtnStatus] = useState(true)
+  
+
+  const handleStatus = (airtime) => {
+    if(airtime === null) {
+      return
+    } else if (airtime.errorMessage === "None") {
+      
+      return 'success'
+    } else {
+      
+      return 'warning'
+    }
+  }
+
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenStatus(false);
+    console.log('Closing the bar')
+  }
+
 
   const columns = [
     { field: "id", headerName: "ID", width: 20, flex: 1 },
     { field: "number", headerName: "PhoneNumber", width: 120, flex: 1 },
     { field: "amount", headerName: "Amount", width: 120 , flex : 1 },
   ]
-
-  const [excelDisplay, setExcelDisplay] = useState([]);
 
    
 
@@ -71,8 +95,9 @@ function UploadAirtime() {
       
    
      sendAirtimeApi(airtime_excel, dispatch);
-     const retrieveJSON = JSON.stringify(airtime);
-     console.log(retrieveJSON);
+     setOpenStatus(true);
+     setSendBtnStatus(true);
+     setExcelDisplay([])
     }
       // submit event
   const handleFileSubmit=(e)=>{
@@ -94,22 +119,45 @@ function UploadAirtime() {
         addExcelItems({id: id, number: entryz[0][1], amount: entryz[1][1]})
 
       })
-
+      setSendBtnStatus(false);
     }
-
-    if(excelDisplay.length > 0 ) {
-      const excejson = JSON.stringify(excelDisplay);
-      console.log("Now I can view the data" +  excejson);
-    }
-    
   }
 
   return (
     <div className='uploadAirtime'>
+    { console.log('exceldata is : ' + sendBtnStatus)}  
+        <div>
+        {{error} && <BasicSnackbar
+                    open={ error }
+                    severity= 'warning'
+                    title= 'Error'
+                    message= 'There is some issue please refresh the page and try again'
+                  />  }
+
+    {   (handleStatus(airtime)  === 'success')  &&  <BasicSnackbar
+                    open={ openStatus }
+                    onClose={ handleClose }
+                    severity= 'success'
+                    title= 'Sent'
+                    message= 'Your airtime is sent please confirm'
+                  />  }
+
+    {   (handleStatus(airtime)  === 'warning')  &&  <BasicSnackbar
+                    open={ openStatus }
+                    onClose={ handleClose }
+                    severity= 'warning'
+                    title= 'Failure'
+                    message= 'Your airtime was not sent, please check phonenumber, amount and try again'
+                  />  }
+
+   
+        </div>
         <div className="userTitleContainer">
         <h2 className="userTitle">Upload and View Excel Sheets</h2>
         <Link to="/uploadairtime">
-          <button className="userAddButton" onClick={ sendAirtime }>Send Airtime</button>
+          <button className="userAddButton" 
+                  disabled = { isFetching || sendBtnStatus }
+                  onClick={ sendAirtime }>Send Airtime</button>
         </Link>
       </div>
 

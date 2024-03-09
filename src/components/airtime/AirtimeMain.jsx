@@ -9,8 +9,7 @@ import { ViewAirtimeContext } from '../../context/viewairtimecontext/ViewAirtime
 function AirtimeMain() {
 
     const { viewAirtime, isFetching, dispatch } = useContext(ViewAirtimeContext);
-  
-  
+   
     useEffect(() => {
         viewAirtimeApi (dispatch);
       }, [dispatch]);
@@ -47,6 +46,8 @@ function AirtimeMain() {
       
   return (
     <div className='airtime'>
+
+  
 
     <DataGrid
     rows={ !isFetching && viewAirtime }
