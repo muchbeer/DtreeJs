@@ -77,7 +77,7 @@ export default function OneAirtime() {
                     message= 'Your airtime is sent please confirm'
                   />  }
 
-{   (handleStatus(singleairtime)  === 'warning')  &&  <BasicSnackbar
+    {   (handleStatus(singleairtime)  === 'warning')  &&  <BasicSnackbar
                     open={ openStatus }
                     onClose={ handleClose }
                     severity= 'warning'
